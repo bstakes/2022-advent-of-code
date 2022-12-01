@@ -1,0 +1,38 @@
+#!/usr/bin/env joker
+
+(ns aoc.day1
+  (:require
+    [joker.string :as s]
+    [joker.strconv :as sc])) 
+
+(defn pipeline 
+  []
+  (->> (slurp "./day1.txt")
+       s/split-lines
+       (partition-by s/blank?)
+       (filter #(not (every? s/blank? %)))
+       (map #(map sc/atoi %))
+       (map #(reduce + %))))
+
+(defn most-cals 
+  [elves]
+  (->> elves
+       (apply max)))
+
+(defn n-most-cals
+  [n elves]
+  (->> elves
+       sort
+       (take-last n)
+       (reduce +)))
+
+(def elves (pipeline))
+
+(println "Most")
+(->> elves most-cals pprint)
+
+
+(println "Top 3")
+(->> elves (n-most-cals 3) pprint)
+
+
